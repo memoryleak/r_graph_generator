@@ -43,7 +43,7 @@ if (is.na(num_graphs) || num_graphs <= 0) {
 # ---------------------------
 # Prepare output directory
 # ---------------------------
-output_dir <- "/app/data/graphs/ws"
+output_dir <- "/app/data/graphs"
 if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE)
 }

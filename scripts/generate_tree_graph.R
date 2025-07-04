@@ -1,14 +1,14 @@
 #!/usr/bin/env Rscript
 
-# R Script: generate_ba_graph.R
-# Description: Generates multiple Barabási–Albert (BA) preferential attachment graphs with configurable parameters.
+# R Script: generate_tree_graph.R
+# Description: Generates multiple random tree graphs (uniform spanning trees) with configurable parameters.
 # Only outputs the current graph index as it works.
 
 # ---------------------------
 # Dependencies
 # ---------------------------
 if (!require("igraph", quietly = TRUE)) {
-  install.packages("igraph", repos = "http://cran.r-project.org")
+  install.packages("igraph", repos = "https://cloud.r-project.org")
   library(igraph)
 }
 
@@ -16,20 +16,17 @@ if (!require("igraph", quietly = TRUE)) {
 # Parse Command-line Arguments
 # ---------------------------
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 3) {
-  cat("Usage: Rscript generate_ba_graph.R <num_nodes> <edges_per_step> <num_graphs>\n")
+if (length(args) != 2) {
+  cat("Usage: Rscript generate_tree_graph.R <num_nodes> <num_graphs>\n")
   quit(status = 1)
 }
 
-num_nodes      <- as.integer(args[1])
-edges_per_step <- as.integer(args[2])
-num_graphs     <- as.integer(args[3])
+num_nodes  <- as.integer(args[1])
+num_graphs <- as.integer(args[2])
 
+# Validate inputs
 if (is.na(num_nodes) || num_nodes <= 1) {
   stop("Error: <num_nodes> must be an integer greater than 1.")
-}
-if (is.na(edges_per_step) || edges_per_step <= 0 || edges_per_step >= num_nodes) {
-  stop("Error: <edges_per_step> must be a positive integer less than <num_nodes>.")
 }
 if (is.na(num_graphs) || num_graphs <= 0) {
   stop("Error: <num_graphs> must be a positive integer.")
@@ -48,14 +45,14 @@ if (!dir.exists(output_dir)) {
 # ---------------------------
 for (i in seq_len(num_graphs)) {
   # Output current graph index
-  cat(sprintf("Working on graph %d\n", i))
+  cat(sprintf("Working on tree graph %d\n", i))
 
-  # Generate BA graph
-  g <- sample_pa(n = num_nodes, power = 1, m = edges_per_step, directed = FALSE)
+  # Generate a random tree (uniform spanning tree) with sample_tree
+  g <- sample_tree(n = num_nodes, directed = FALSE)
 
   # Filenames
-  png_file     <- file.path(output_dir, sprintf("ba_graph_n%d_m%d_%d.png", num_nodes, edges_per_step, i))
-  graphml_file <- file.path(output_dir, sprintf("ba_graph_n%d_m%d_%d.graphml", num_nodes, edges_per_step, i))
+  png_file     <- file.path(output_dir, sprintf("tree_graph_n%d_%d.png", num_nodes, i))
+  graphml_file <- file.path(output_dir, sprintf("tree_graph_n%d_%d.graphml", num_nodes, i))
 
   # Save PNG
   png(filename = png_file, width = 800, height = 800)
@@ -63,7 +60,7 @@ for (i in seq_len(num_graphs)) {
     g,
     vertex.size  = 5,
     vertex.label = NA,
-    main         = sprintf("Barabási–Albert BA(n=%d, m=%d) #%d", num_nodes, edges_per_step, i)
+    main         = sprintf("Random Tree (n=%d) #%d", num_nodes, i)
   )
   dev.off()
 

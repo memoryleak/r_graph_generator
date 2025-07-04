@@ -42,7 +42,7 @@ prob_str <- gsub("\\.", "", as.character(edge_prob))
 # ---------------------------
 # Prepare output directory
 # ---------------------------
-output_dir <- "/app/data/graphs/er"
+output_dir <- "/app/data/graphs"
 if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE)
 }

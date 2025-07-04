@@ -4,28 +4,38 @@ services:
       context: .
       dockerfile: docker/BA.Dockerfile
     volumes:
-      - ./data/graphs/ba:/app/data/graphs/ba
+      - ./data/graphs/ba:/app/data/graphs
     entrypoint: ["Rscript", "/app/generate_ba_graph.R"]
     # <num_nodes> <edges_per_step> <num_graphs>
-    command: ["100", "3", "5"]
+    command: ["${GEN_NUM_NODES}", "${GEN_EDGES_PER_STEP}", "${GEN_NUM_GRAPHS}"]
 
   graph_generator_er:
     build:
       context: .
       dockerfile: docker/ER.Dockerfile
     volumes:
-      - ./data/graphs/er:/app/data/graphs/er
+      - ./data/graphs/er:/app/data/graphs
     entrypoint: ["Rscript", "/app/generate_er_graph.R"]
     # <num_nodes> <edge_probability> <num_graphs>
-    command: ["50", "0.1", "4"]
+    command: ["${GEN_NUM_NODES}", "${GEN_EDGE_PROBABILITY}", "${GEN_NUM_GRAPHS}"]
 
   graph_generator_ws:
     build:
       context: .
       dockerfile: docker/WS.Dockerfile
     volumes:
-      - ./data/graphs/ws:/app/data/graphs/ws
+      - ./data/graphs/ws:/app/data/graphs
     entrypoint: ["Rscript", "/app/generate_ws_graph.R"]
     # <num_nodes> <neighborhood_size> <rewiring_prob> <num_graphs>
-    command: ["50", "2", "0.1", "4"] 
+    command: ["${GEN_NUM_NODES}", "${GEN_NEIGHBORHOOD_SIZE}", "${GEN_REWIRING_PROB}", "${GEN_NUM_GRAPHS}"] 
+  
+  graph_generator_tree:
+    build:
+      context: .
+      dockerfile: docker/TREE.Dockerfile
+    volumes:
+      - ./data/graphs/tree:/app/data/graphs
+    entrypoint: ["Rscript", "/app/generate_tree_graph.R"]
+    # <num_nodes> <num_graphs>
+    command: ["${GEN_NUM_NODES}", "${GEN_NUM_GRAPHS}"] 
     
