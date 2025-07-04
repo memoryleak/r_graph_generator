@@ -7,8 +7,10 @@ Collection of R-Scripts to generate different graph types.
 - Docker Compose
 
 ## Usage
-
-### Using Docker (Recommended)
+### Build base image
+    docker build -t memoryleak/r:4.5.1 -f docker/Dockerfile .
+    
+### Using Docker compose
 
 The easiest way to run the graph generators is using Docker:
     
@@ -22,6 +24,12 @@ Random graphs where each possible edge appears independently with probability *p
 
 ### Barabási-Albert Graphs
 Scale-free networks generated through preferential attachment, where new nodes connect to existing nodes with probability proportional to their degree.
+
+### Watts–Strogatz small-world
+Watts–Strogatz small-world graphs are a type of network model that captures key features of many real-world systems, such as social and biological networks. 
+
+### Tree
+Tree graphs are a type of connected, acyclic graph that resemble a branching structure similar to a tree in nature. In a tree graph, there is exactly one unique path between any pair of nodes, ensuring no cycles exist. 
 
 ## Development
 
